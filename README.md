@@ -9,15 +9,16 @@
 
 ## 含まれる設定
 
-| ファイル                      | 説明                                 |
-| ----------------------------- | ------------------------------------ |
-| `.zshrc`                      | シェル設定                           |
-| `Brewfile`                    | Homebrewでインストールするパッケージ |
-| `.config/mise/config.toml`    | mise設定（グローバルPythonバージョン）|
-| `.config/uv/uv.toml`          | uv設定                               |
-| `.config/uv/uv-tools.txt`     | uvでインストールするツール           |
-| `.config/zellij/config.kdl`   | zellij設定                           |
-| `.config/zellij/layouts/default.kdl` | zellijレイアウト              |
+| ファイル                             | 説明                                   |
+| ------------------------------------ | -------------------------------------- |
+| `.zshrc`                             | シェル設定                             |
+| `Brewfile`                           | Homebrewでインストールするパッケージ   |
+| `.config/mise/config.toml`           | mise設定（グローバルPythonバージョン） |
+| `.config/uv/uv.toml`                 | uv設定                                 |
+| `.config/uv/uv-tools.txt`            | uvでインストールするツール             |
+| `.config/zellij/config.kdl`          | Zellij設定                             |
+| `.config/zellij/layouts/default.kdl` | Zellijレイアウト                       |
+| `.config/ghostty/config`             | Ghostty設定                            |
 
 ## セットアップ
 

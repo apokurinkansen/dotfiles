@@ -59,4 +59,7 @@ mkdir -p ~/.config/zellij/layouts
 ln -sf "$DOTFILES_DIR/.config/zellij/config.kdl" ~/.config/zellij/config.kdl
 ln -sf "$DOTFILES_DIR/.config/zellij/layouts/default.kdl" ~/.config/zellij/layouts/default.kdl
 
+mkdir -p ~/.config/ghostty
+ln -sf "$DOTFILES_DIR/.config/ghostty/config" ~/.config/ghostty/config
+
 echo "Setup complete! Run 'source ~/.zshrc' to apply changes."
