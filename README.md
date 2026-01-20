@@ -9,13 +9,13 @@
 
 ## 含まれる設定
 
-| ファイル          | 説明                                 |
-| ----------------- | ------------------------------------ |
-| `.zshrc`          | シェル設定                           |
-| `.python-version` | グローバルPythonバージョン           |
-| `Brewfile`        | Homebrewでインストールするパッケージ |
-| `uv/uv.toml`      | uv設定                               |
-| `uv/uv-tools.txt` | uvでインストールするツール           |
+| ファイル                      | 説明                                 |
+| ----------------------------- | ------------------------------------ |
+| `.zshrc`                      | シェル設定                           |
+| `Brewfile`                    | Homebrewでインストールするパッケージ |
+| `.config/mise/config.toml`    | mise設定（グローバルPythonバージョン）|
+| `.config/uv/uv.toml`          | uv設定                               |
+| `.config/uv/uv-tools.txt`     | uvでインストールするツール           |
 
 ## セットアップ
 
@@ -30,7 +30,7 @@ source ~/.zshrc
 
 1. Homebrew をインストール（未インストールの場合）
 2. `Brewfile` のパッケージをインストール
-3. uv をインストール
-4. Python 3.13 をインストール
-5. `uv/uv-tools.txt` に記載されたツールをインストール
+3. mise で Python をインストール
+4. uv をインストール
+5. `.config/uv/uv-tools.txt` に記載されたツールをインストール
 6. シンボリックリンクを作成
