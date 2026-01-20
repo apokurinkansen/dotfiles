@@ -20,7 +20,7 @@
 ## セットアップ
 
 ```bash
-git clone https://github.com/tanu/dotfiles.git ~/dotfiles
+git clone https://github.com/tanuuuuuuu/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./setup.sh
 source ~/.zshrc
