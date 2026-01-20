@@ -19,6 +19,15 @@
 | `.config/zellij/config.kdl`          | Zellij設定                             |
 | `.config/zellij/layouts/default.kdl` | Zellijレイアウト                       |
 | `.config/ghostty/config`             | Ghostty設定                            |
+| `.config/starship.toml`              | Starshipプロンプト設定                 |
+| `.config/nvim/`                      | Neovim設定                             |
+| `.claude/CLAUDE.md`                  | Claude Codeカスタム指示                |
+| `.claude/settings.json`              | Claude Code設定                        |
+| `.claude/skills/`                    | Claude Codeスキル                      |
+| `.claude/sounds/`                    | Claude Code通知音                      |
+| `.claude/statusline.sh`              | Claude Codeステータスライン            |
+
+※ `.claude/` 以下はユーザーレベル設定（`~/.claude/`）。このため dotfiles プロジェクト固有の Claude Code 設定は作成できない。必要になった場合は構造の見直しが必要。
 
 ## セットアップ
 
@@ -36,4 +45,4 @@ source ~/.zshrc
 3. mise で Python をインストール
 4. uv をインストール
 5. `.config/uv/uv-tools.txt` に記載されたツールをインストール
-6. シンボリックリンクを作成
+6. シンボリックリンクを作成（`.zshrc`, `.config/`, `.claude/`）
