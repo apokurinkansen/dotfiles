@@ -11,28 +11,30 @@
 
 ```
 .
-├── .zshrc                  # シェル設定
-├── Brewfile                # Homebrewパッケージ
-├── setup.sh                # セットアップスクリプト
+├── .zshrc                   # シェル設定
+├── Brewfile                 # Homebrewパッケージ
+├── setup.sh                 # セットアップスクリプト
 │
 ├── .config/
-│   ├── ghostty/config      # Ghostty設定
-│   ├── mise/config.toml    # mise（グローバルPython）
-│   ├── nvim/               # Neovim設定
-│   ├── starship.toml       # Starshipプロンプト設定
+│   ├── ghostty/config       # Ghostty設定
+│   ├── mise/config.toml     # mise（グローバルPython）
+│   ├── nvim/                # Neovim設定
+│   ├── raycast/
+│   │   └── script-commands/ # Raycastスクリプトコマンド
+│   ├── starship.toml        # Starshipプロンプト設定
 │   ├── uv/
-│   │   ├── uv.toml         # uv設定
-│   │   └── uv-tools.txt    # uvでインストールするCLIツール
+│   │   ├── uv.toml          # uv設定
+│   │   └── uv-tools.txt     # uvでインストールするCLIツール
 │   └── zellij/
-│       ├── config.kdl      # Zellij設定
-│       └── layouts/        # Zellijレイアウト
+│       ├── config.kdl       # Zellij設定
+│       └── layouts/         # Zellijレイアウト
 │
-└── .claude/                # Claude Code設定（ユーザーレベル）
-    ├── CLAUDE.md           # カスタム指示
-    ├── settings.json       # 設定
-    ├── skills/             # Agents Skills
-    ├── sounds/             # 通知音
-    └── statusline.sh       # ステータスライン
+└── .claude/                 # Claude Code設定（ユーザーレベル）
+    ├── CLAUDE.md            # カスタム指示
+    ├── settings.json        # 設定
+    ├── skills/              # Agents Skills
+    ├── sounds/              # 通知音
+    └── statusline.sh        # ステータスライン
 ```
 
 `.claude/` は `~/.claude/` にリンクされるユーザーレベル設定。このため dotfiles プロジェクト固有の Claude Code 設定は作成できない（必要になった場合は構造の見直しが必要）。

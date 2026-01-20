@@ -13,6 +13,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - プロンプト: Starship
 - ターミナルマルチプレクサ: Zellij
 - ターミナルエミュレータ: Ghostty
+- ランチャー: Raycast
 - コーディングエージェント: Claude Code
 
 ## 構造
