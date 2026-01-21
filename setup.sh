@@ -45,6 +45,14 @@ if [ -f "$DOTFILES_DIR/.config/uv/uv-tools.txt" ]; then
 fi
 
 # ==================================================
+# Claude Code
+# ==================================================
+if ! command -v claude &> /dev/null; then
+    echo "Installing Claude Code..."
+    curl -fsSL https://claude.ai/install.sh | bash
+fi
+
+# ==================================================
 # 設定ファイル（シンボリックリンク）
 # ==================================================
 ln -sf "$DOTFILES_DIR/.zshrc" ~/.zshrc
