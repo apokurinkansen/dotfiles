@@ -1,5 +1,9 @@
 {
   "permissions": {
+    "deny": [
+      "Bash(rm *)",
+      "Bash(rmdir *)"
+    ],
     "allow": [
       "Bash(TZ=Asia/Tokyo date:*)",
       "Bash(cd:*)",
