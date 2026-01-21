@@ -9,4 +9,5 @@ brew "trash"       # rm の代わりに使用（復元可能）
 brew "zellij"
 brew "zsh-autosuggestions"
 
+cask "font-hackgen"
 cask "ghostty"
