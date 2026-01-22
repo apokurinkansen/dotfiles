@@ -23,6 +23,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - `.config/` - 各種ツールの設定
 - `.claude/` - Claude Code の設定
 - `setup.sh` - 初期セットアップスクリプト
+- `macos.sh` - macOS システム設定（defaults コマンド）
 
 ## 作業ルール
 
