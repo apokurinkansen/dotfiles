@@ -57,3 +57,14 @@ source ~/.zshrc
 5. `.config/uv/uv-tools.txt` に記載されたツールをインストール
 6. Claude Code をインストール（未インストールの場合）
 7. シンボリックリンクを作成（`.zshrc`, `.config/`, `.claude/`）
+
+## 手動でインストールするアプリ
+
+Homebrew で管理できないアプリや sudo が必要なものは手動インストールする。
+
+| アプリ | 入手先 | 説明 | インストール |
+|--------|--------|------|--------------|
+| DisplayLink Manager | [公式サイト](https://www.synaptics.com/products/displaylink-graphics/downloads/macos) | USB外部ディスプレイ用ドライバ | `brew install --cask displaylink` |
+| Google 日本語入力 | [公式サイト](https://www.google.co.jp/ime/) | 日本語入力システム | `brew install --cask google-japanese-ime` |
+| RunCat | [App Store](https://apps.apple.com/jp/app/runcat/id1429033973) | メニューバーでCPU使用率を表示 | - |
+| Tailscale | [公式サイト](https://tailscale.com/) | メッシュVPN | `brew install --cask tailscale-app` |
