@@ -106,6 +106,9 @@ defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 # Trackpad
 # ==================================================
 
+# トラッキング速度 (0-3, 大きいほど速い。システム設定の最速は3)
+defaults write NSGlobalDomain com.apple.trackpad.scaling -float 3
+
 # タップでクリック
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
