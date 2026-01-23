@@ -1,4 +1,4 @@
-tap "laishulu/homebrew"  # macism
+tap "laishulu/macism"
 
 brew "fzf"
 brew "macism"      # IME切り替え（Neovim用）
