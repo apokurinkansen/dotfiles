@@ -46,6 +46,7 @@
     ├── settings.json        # 設定
     ├── skills/
     │   ├── claude-md/       # CLAUDE.md作成・改善スキル
+    │   ├── git-cleanup/     # PRマージ後のブランチ整理
     │   └── skill-creator/   # スキル作成ガイド（Anthropic公式）
     ├── sounds/              # 通知音
     └── statusline.sh        # ステータスライン
