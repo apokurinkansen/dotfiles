@@ -9,7 +9,7 @@ layout {
         }
     }
 
-    // 開発用3ペインレイアウト: Vim + Terminal + Claude Code
+    // 開発用2ペインレイアウト: NeoVim + Claude Code
     pane_template name="dev-layout" {
         pane split_direction="vertical" {
             pane size="55%" name="Vim" command="nvim"
