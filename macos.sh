@@ -213,4 +213,7 @@ killall Dock
 killall Finder
 killall SystemUIServer
 
-echo "Done! Some changes may require logout/restart to take effect."
+echo "Done!"
+echo ""
+echo "Note: Some settings (Keyboard, Trackpad, etc.) require a restart to take effect."
+echo "Please restart your Mac to apply all changes."

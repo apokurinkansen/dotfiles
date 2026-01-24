@@ -21,6 +21,8 @@
 
 ```
 .
+├── .gitattributes           # Git属性設定
+├── .gitignore               # Git除外設定
 ├── .zprofile                # ログインシェル設定
 ├── .zshrc                   # インタラクティブシェル設定
 ├── Brewfile                 # Homebrewパッケージ
@@ -28,7 +30,9 @@
 ├── macos.sh                 # macOS システム設定
 │
 ├── .config/
-│   ├── ghostty/config       # Ghostty設定
+│   ├── ghostty/
+│   │   ├── config           # Ghostty設定
+│   │   └── bg.jpg           # 背景画像
 │   ├── mise/config.toml     # mise（グローバルPython）
 │   ├── nvim/                # Neovim設定
 │   ├── raycast/
@@ -71,7 +75,8 @@ source ~/.zshrc
 4. uv をインストール
 5. `.config/uv/uv-tools.txt` に記載されたツールをインストール
 6. Claude Code をインストール（未インストールの場合）
-7. シンボリックリンクを作成（`.zprofile`, `.zshrc`, `.config/`, `.claude/`）
+7. Google Cloud SDK をインストール（未インストールの場合）
+8. シンボリックリンクを作成（`.zprofile`, `.zshrc`, `.config/`, `.claude/`）
 
 ## macOS システム設定
 
