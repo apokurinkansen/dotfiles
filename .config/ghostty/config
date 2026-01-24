@@ -28,7 +28,7 @@ window-theme = ghostty
 # ==================================================
 
 # 不透明度（0.0〜1.0）
-background-opacity = 0.90
+background-opacity = 1
 
 # ぼかし半径（ピクセル）
 background-blur-radius = 20
