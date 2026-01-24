@@ -83,6 +83,10 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # F1、F2などを標準のファンクションキーとして使用
 defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true
 
+# Spotlight のショートカットを無効化 (Cmd+Space)
+# Raycast 等の他ランチャーに割り当てるため
+/usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:64:enabled false" ~/Library/Preferences/com.apple.symbolichotkeys.plist
+
 # ==================================================
 # Text Input
 # ==================================================
