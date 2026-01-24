@@ -7,6 +7,7 @@ brew "mise"
 brew "neovim"
 brew "starship"
 brew "trash"       # rm の代わりに使用（復元可能）
+brew "tree"
 brew "zellij"
 brew "zsh-autosuggestions"
 
@@ -26,4 +27,3 @@ cask "obsidian"
 cask "positron"
 cask "raycast"
 cask "slack"
-cask "tailscale-app"

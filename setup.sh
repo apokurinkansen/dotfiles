@@ -56,7 +56,7 @@ fi
 # ==================================================
 # Google Cloud SDK
 # ==================================================
-if ! command -v gcloud &> /dev/null; then
+if ! command -v gcloud &> /dev/null && [ ! -d "$HOME/google-cloud-sdk" ]; then
     echo "Installing Google Cloud SDK..."
     export CLOUDSDK_CORE_DISABLE_PROMPTS=1
     curl https://sdk.cloud.google.com | bash
