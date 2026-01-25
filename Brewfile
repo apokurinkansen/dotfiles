@@ -13,6 +13,7 @@ brew "zellij"
 brew "zsh-autosuggestions"
 
 cask "1password"
+cask "alt-tab"
 cask "aqua-voice"
 cask "arc"
 cask "chatwork"
