@@ -109,7 +109,7 @@ if [ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ]; then
 fi
 ln -sfn "$DOTFILES_DIR/.claude/skills" ~/.claude/skills
 
-ln -sf "$DOTFILES_DIR/.claude/sounds/complete.wav" ~/.claude/sounds/complete.wav
+ln -sf "$DOTFILES_DIR/.claude/sounds/complete_girl.wav" ~/.claude/sounds/complete_girl.wav
 ln -sf "$DOTFILES_DIR/.claude/sounds/confirm.wav" ~/.claude/sounds/confirm.wav
 
 echo "Setup complete! Run 'source ~/.zshrc' to apply changes."
