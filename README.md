@@ -1,96 +1,100 @@
 # dotfiles
 
-個人用の設定ファイル管理リポジトリ。
+macOS 用の個人設定ファイル管理リポジトリ。
 
-## 前提
+シェル、エディタ、ターミナル等の設定をシンボリックリンクで管理する。`~/dotfiles/` に clone して使用。
 
-- OS: macOS（Intel / Apple Silicon どちらも対応）
-- シェル: zsh
+## 技術スタック
 
-## リポジトリ配置
+| カテゴリ | ツール | 説明 |
+|----------|--------|------|
+| OS | macOS | Intel / Apple Silicon 両対応 |
+| パッケージ管理 | Homebrew | macOS 用パッケージマネージャ |
+| | mise | ランタイムバージョン管理（Python 等） |
+| | uv | 高速な Python パッケージマネージャ |
+| シェル | zsh | デフォルトシェル |
+| | Starship | カスタマイズ可能なプロンプト |
+| ターミナル | Ghostty | ターミナルエミュレータ |
+| | Zellij | ターミナルマルチプレクサ（tmux 代替） |
+| 開発ツール | Neovim（AstroNvim ベース） | エディタ |
+| | Claude Code | コーディングエージェント |
+| ユーティリティ | Raycast | ランチャーアプリ |
 
-ローカルリポジトリは基本的に `~/repos/` で管理する。dotfiles のみ慣習的なわかりやすさから `~/dotfiles/` に配置。
-
-```
-~/
-├── dotfiles/    # このリポジトリ（設定ファイル管理）
-└── repos/       # その他のリポジトリ
-```
-
-## ディレクトリ構造
+## ディレクトリ構成
 
 ```
 .
-├── .gitattributes           # Git属性設定
-├── .gitignore               # Git除外設定
-├── .zprofile                # ログインシェル設定
-├── .zshrc                   # インタラクティブシェル設定
-├── Brewfile                 # Homebrewパッケージ
-├── setup.sh                 # セットアップスクリプト
-├── macos.sh                 # macOS システム設定
+├── .zprofile              # ログインシェル設定
+├── .zshrc                 # インタラクティブシェル設定
+├── Brewfile               # Homebrew パッケージ
+├── setup.sh               # セットアップスクリプト
+├── macos.sh               # macOS 設定用スクリプト
 │
-├── .config/
-│   ├── ghostty/
-│   │   ├── config           # Ghostty設定
-│   │   └── bg.jpg           # 背景画像
-│   ├── mise/config.toml     # mise（グローバルPython）
-│   ├── nvim/                # Neovim設定
-│   ├── raycast/
-│   │   └── script-commands/ # Raycastスクリプトコマンド
-│   ├── starship.toml        # Starshipプロンプト設定
-│   ├── uv/
-│   │   ├── uv.toml          # uv設定
-│   │   └── uv-tools.txt     # uvでインストールするCLIツール
-│   └── zellij/
-│       ├── config.kdl       # Zellij設定
-│       └── layouts/         # Zellijレイアウト
+├── .config/               # ~/.config/ にリンク
+│   ├── ghostty/           # ターミナル設定
+│   ├── nvim/              # Neovim 設定
+│   ├── mise/              # ランタイム管理設定
+│   ├── raycast/           # Raycast スクリプト
+│   ├── starship.toml      # プロンプト設定
+│   ├── uv/                # Python パッケージ管理設定
+│   └── zellij/            # ターミナルマルチプレクサ設定
 │
-└── .claude/                 # Claude Code設定（ユーザーレベル）
-    ├── CLAUDE.md            # カスタム指示
-    ├── settings.json        # 設定
-    ├── skills/
-    │   ├── canvas-design/   # ビジュアルデザイン・アート作成（Anthropic公式）
-    │   ├── claude-md/       # CLAUDE.md作成・改善スキル
-    │   ├── doc-coauthoring/ # ドキュメント共同執筆ワークフロー（Anthropic公式）
-    │   ├── git-cleanup/     # PRマージ後のブランチ整理
-    │   ├── internal-comms/  # 社内コミュニケーション作成（Anthropic公式）
-    │   ├── skill-creator/   # スキル作成ガイド（Anthropic公式）
-    │   └── theme-factory/   # アーティファクトのテーマ適用（Anthropic公式）
-    ├── sounds/              # 通知音
-    └── statusline.sh        # ステータスライン
+└── .claude/               # ~/.claude/ にリンク（ユーザーレベル設定）
+    ├── CLAUDE.md          # カスタム指示
+    ├── settings.json      # 設定
+    └── skills/            # カスタムスキル
 ```
 
-`.claude/` は `~/.claude/` にリンクされるユーザーレベル設定。このため dotfiles プロジェクト固有の Claude Code 設定は作成できない（必要になった場合は構造の見直しが必要）。
+詳細は各ディレクトリの README を参照。
 
 ## セットアップ
 
+### 前提条件
+
+- macOS（Intel / Apple Silicon 両対応）
+- zsh（macOS デフォルト）
+- Git
+- Xcode Command Line Tools
+
+### インストール
+
 ```bash
 git clone https://github.com/tanuuuuuuu/dotfiles.git ~/dotfiles
-cd ~/dotfiles
-./setup.sh
-source ~/.zshrc
+~/dotfiles/setup.sh
+source ~/.zshrc  # またはターミナル再起動
 ```
 
-## setup.sh がやること
+> **注意**
+> - 既存の設定ファイル（.zshrc, .zprofile, .config/nvim 等）は上書きされる。必要に応じて事前にバックアップを取ること
+> - Homebrew のインストール時に sudo パスワードを求められる場合がある
+
+### setup.sh の内容
 
 1. Homebrew をインストール（未インストールの場合）
-2. `Brewfile` のパッケージをインストール
+2. Brewfile のパッケージをインストール
 3. mise で Python をインストール
 4. uv をインストール
-5. `.config/uv/uv-tools.txt` に記載されたツールをインストール
+5. uv-tools.txt に記載されたツールをインストール
 6. Claude Code をインストール（未インストールの場合）
 7. Google Cloud SDK をインストール（未インストールの場合）
-8. シンボリックリンクを作成（`.zprofile`, `.zshrc`, `.config/`, `.claude/`）
+8. シンボリックリンクを作成
 
 ## macOS システム設定
 
-`defaults` コマンドによる macOS 設定を適用する。`setup.sh` とは独立しており、必要に応じて手動実行する。
+`defaults` コマンドで macOS の設定を適用する。setup.sh とは独立しており、必要に応じて手動実行する。
+
+### 使い方
 
 ```bash
-./macos.sh
+~/dotfiles/macos.sh
 ```
 
-含まれる設定:
+> **注意**
+> - システムフォルダの英語表示に sudo パスワードが必要
+> - 設定反映のため、実行後に再ログインまたは再起動を推奨
+
+### macos.sh の内容
+
 - **Dock**: 右側配置、自動非表示、アイコンサイズ、アニメーション速度
 - **Finder**: 隠しファイル表示、拡張子表示、パスバー、ステータスバー、カラム表示、フォルダ優先
 - **キーボード**: キーリピート速度（超速）、長押しでキーリピート
@@ -103,9 +107,7 @@ source ~/.zshrc
 - **TextEdit**: デフォルトをプレーンテキストに
 - **その他**: .DS_Store をネットワーク/USB に作成しない、フォルダ名を英語表示
 
-**注意**: システムフォルダの英語表示に sudo が必要です。
-
-## 手動でインストールするアプリ
+## 手動インストールアプリ
 
 Homebrew で管理できないアプリ。
 
