@@ -17,7 +17,7 @@
 └── zellij/            # ターミナルマルチプレクサ
 ```
 
-## Ghostty
+## [Ghostty](https://ghostty.org/)
 
 GPU ベースの高速ターミナルエミュレータ。macOS / Linux 対応。
 
@@ -39,7 +39,7 @@ GPU ベースの高速ターミナルエミュレータ。macOS / Linux 対応�
 | カーソル | ブロック型、点滅なし |
 | キーバインド | 左 Option キーを Alt として使用（macOS の Option は通常特殊文字入力だが、Zellij のキーバインドで Alt として使うため） |
 
-## mise
+## [mise](https://mise.jdx.dev/)
 
 プログラミング言語のバージョン管理ツール。asdf の Rust 製代替で高速。グローバルにインストールする言語を管理する（プロジェクト単位の Python 管理は uv を使用）。
 
@@ -49,13 +49,13 @@ GPU ベースの高速ターミナルエミュレータ。macOS / Linux 対応�
 |------|-----|
 | Python | 3.13 |
 
-## Neovim
+## [Neovim](https://neovim.io/)
 
 Vim ベースの高機能テキストエディタ。[AstroNvim](https://astronvim.com/) をベースにカスタマイズ。
 
 詳細は [nvim/README.md](nvim/README.md) を参照。
 
-## Raycast
+## [Raycast](https://www.raycast.com/)
 
 macOS 用ランチャーアプリ。Spotlight の高機能版で、カスタムスクリプトやワークフローを実行できる。
 
@@ -69,7 +69,7 @@ macOS 用ランチャーアプリ。Spotlight の高機能版で、カスタム�
 | `open-marimo.sh` | marimo（Python ノートブック）を起動 |
 | `zettel-id.sh` | Zettelkasten 用の ID を生成 |
 
-## Starship
+## [Starship](https://starship.rs/)
 
 シェルプロンプトのカスタマイズツール。Rust 製で高速。Git ブランチ、言語バージョンなどをプロンプトに表示できる。
 
@@ -77,7 +77,7 @@ macOS 用ランチャーアプリ。Spotlight の高機能版で、カスタム�
 
 デフォルト設定を使用。カスタマイズする場合は [公式ドキュメント](https://starship.rs/config/) を参照。
 
-## uv
+## [uv](https://docs.astral.sh/uv/)
 
 高速な Python パッケージマネージャ。pip / venv の代替として使用。Rust 製で pip より 10〜100 倍速い。
 
@@ -87,7 +87,7 @@ macOS 用ランチャーアプリ。Spotlight の高機能版で、カスタム�
 |------|-----|------|
 | `python-preference` | `only-managed` | mise で管理された Python のみ使用 |
 
-## Zellij
+## [Zellij](https://zellij.dev/)
 
 ターミナルマルチプレクサ。tmux の代替で、ペイン分割やセッション管理ができる。Rust 製でモダンな UI。
 
