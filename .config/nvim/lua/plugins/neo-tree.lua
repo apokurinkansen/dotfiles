@@ -10,6 +10,7 @@ return {
           ".DS_Store",
         },
       },
+      use_libuv_file_watcher = true,
     },
   },
   init = function()
