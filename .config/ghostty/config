@@ -79,9 +79,6 @@ macos-titlebar-style = transparent
 # 起動時にフルスクリーン
 fullscreen = true
 
-# macOS標準ではなくGhostty独自のフルスクリーン
-macos-non-native-fullscreen = true
-
 
 # ==================================================
 # キーバインド
