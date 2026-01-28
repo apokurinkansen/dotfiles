@@ -41,6 +41,7 @@ nvim/
 │       ├── gitsigns.lua    # Git 差分・blame 表示
 │       ├── iceberg.lua     # カラースキーム追加
 │       ├── im-select.lua   # IME 自動切替
+│       ├── lualine.lua     # ステータスライン（モード表示）
 │       ├── mason.lua       # LSP/ツール管理（未使用）
 │       ├── neo-tree.lua    # ファイルツリー
 │       ├── none-ls.lua     # フォーマッタ/リンター（未使用）
@@ -80,6 +81,7 @@ nvim/
 | gitsigns | インライン blame 表示 | 各行の変更者・日時を即座に確認できる（GitLens 風） |
 | Neo-tree | 起動時に自動フォーカス | IDE 風にファイルツリーをすぐ使えるようにするため |
 | im-select | Insert モードを抜けたとき IME を英語に切替 | Normal モードに戻ったとき日本語入力が残る問題を解消 |
+| lualine | モード表示付きステータスライン | 現在のモード（Normal/Insert/Visual 等）を色付きで表示 |
 
 ## プラグイン設定
 
@@ -161,6 +163,22 @@ AstroNvim のコア機能をカスタマイズ。
 | 非表示ファイル | .DS_Store のみ | macOS のメタファイルは非表示 |
 | ファイル監視 | libuv | ファイル変更を自動検知 |
 | 起動時動作 | 自動フォーカス | Neovim 起動時にツリーにフォーカス |
+
+### lualine.lua - ステータスライン
+
+[lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) で現在のモードを色付きで表示。AstroNvim デフォルトの Heirline ステータスラインを無効化して置き換え。
+
+| 設定 | 値 | 説明 |
+|------|-----|------|
+| テーマ | auto | カラースキームに自動追従 |
+| globalstatus | true | 全ウィンドウで共通のステータスライン |
+| セパレータ | なし | シンプルな見た目 |
+
+**ステータスライン構成**:
+
+```
+[MODE] | branch diff diagnostics | filename ... encoding fileformat filetype | progress | location
+```
 
 ## テンプレートファイルについて
 
