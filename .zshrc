@@ -13,13 +13,25 @@ fi
 # ==================================================
 # プラグイン
 # ==================================================
-# コマンド入力時に履歴から補完候補を表示
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# ファジーファインダー（Ctrl+Rで履歴検索など）
-source $(brew --prefix)/opt/fzf/shell/completion.zsh
-source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh
-# ターミナル起動時に入力メソッドを英数に切り替え
-macism com.apple.keylayout.ABC
+# Homebrew が利用可能な場合のみプラグインを読み込む
+if command -v brew &> /dev/null; then
+    BREW_PREFIX=$(brew --prefix)
+    # コマンド入力時に履歴から補完候補を表示
+    if [ -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+        source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    fi
+    # ファジーファインダー（Ctrl+Rで履歴検索など）
+    if [ -f "$BREW_PREFIX/opt/fzf/shell/completion.zsh" ]; then
+        source "$BREW_PREFIX/opt/fzf/shell/completion.zsh"
+    fi
+    if [ -f "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh" ]; then
+        source "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
+    fi
+fi
+# ターミナル起動時に入力メソッドを英数に切り替え（macOS専用）
+if [[ "$OSTYPE" == "darwin"* ]] && command -v macism &> /dev/null; then
+    macism com.apple.keylayout.ABC
+fi
 
 # ==================================================
 # プロンプト（Starship）
@@ -43,8 +55,8 @@ setopt correct
 alias vim='nvim'
 
 # ==================================================
-# Zellij自動起動（Ghostty使用時のみ）
+# Zellij自動起動（Ghostty使用時のみ、macOS専用）
 # ==================================================
-if [[ "$TERM" == "xterm-ghostty" ]] && [[ -z "$ZELLIJ" ]]; then
+if [[ "$OSTYPE" == "darwin"* ]] && [[ "$TERM" == "xterm-ghostty" ]] && [[ -z "$ZELLIJ" ]]; then
   zellij
 fi

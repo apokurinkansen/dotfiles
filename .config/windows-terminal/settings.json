@@ -1,0 +1,93 @@
+{
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "defaultProfile": "{2c4de342-38b7-51cf-b940-2309a097f518}",
+  "profiles": {
+    "defaults": {
+      "font": {
+        "face": "HackGen35 Console",
+        "size": 14
+      },
+      "colorScheme": "GitHub Dark",
+      "cursorShape": "filledBox",
+      "cursorHeight": 1,
+      "antialiasingMode": "grayscale",
+      "snapOnInput": true,
+      "historySize": 10000,
+      "padding": "16, 16, 16, 16",
+      "opacity": 100,
+      "useAcrylic": false,
+      "backgroundImage": "",
+      "backgroundImageOpacity": 0.07,
+      "backgroundImageStretchMode": "uniformToFill"
+    },
+    "list": [
+      {
+        "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
+        "name": "Ubuntu",
+        "source": "Windows.Terminal.Wsl",
+        "hidden": false,
+        "colorScheme": "GitHub Dark",
+        "font": {
+          "face": "HackGen35 Console",
+          "size": 14
+        },
+        "startingDirectory": "~"
+      },
+      {
+        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+        "name": "PowerShell",
+        "commandline": "powershell.exe",
+        "hidden": true,
+        "colorScheme": "GitHub Dark"
+      },
+      {
+        "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+        "name": "Command Prompt",
+        "commandline": "cmd.exe",
+        "hidden": true,
+        "colorScheme": "GitHub Dark"
+      },
+      {
+        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+        "name": "Azure Cloud Shell",
+        "source": "Windows.Terminal.Azure",
+        "hidden": true
+      }
+    ]
+  },
+  "schemes": [
+    {
+      "name": "GitHub Dark",
+      "background": "#1e1e1e",
+      "black": "#1e1e1e",
+      "blue": "#7aa2f7",
+      "brightBlack": "#1e1e1e",
+      "brightBlue": "#7aa2f7",
+      "brightCyan": "#7dcfff",
+      "brightGreen": "#9ece6a",
+      "brightPurple": "#bb9af7",
+      "brightRed": "#f44747",
+      "brightWhite": "#d4d4d4",
+      "brightYellow": "#e0af68",
+      "cyan": "#7dcfff",
+      "foreground": "#d4d4d4",
+      "green": "#9ece6a",
+      "purple": "#bb9af7",
+      "red": "#f44747",
+      "white": "#d4d4d4",
+      "yellow": "#e0af68"
+    }
+  ],
+  "keybindings": [
+    {
+      "command": {
+        "action": "sendInput",
+        "input": "\u001b\r"
+      },
+      "keys": "shift+enter"
+    }
+  ],
+  "startupActions": "newTab",
+  "theme": "system",
+  "requestedTheme": "dark"
+}
