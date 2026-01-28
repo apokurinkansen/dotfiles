@@ -212,6 +212,7 @@ mkdir -p ~/.claude/sounds
 ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" ~/.claude/CLAUDE.md
 ln -sf "$DOTFILES_DIR/.claude/settings.json" ~/.claude/settings.json
 ln -sf "$DOTFILES_DIR/.claude/statusline.sh" ~/.claude/statusline.sh
+ln -sf "$DOTFILES_DIR/.claude/play-sound.sh" ~/.claude/play-sound.sh
 
 # skillsはディレクトリ全体をシンボリックリンク
 if [ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ]; then
