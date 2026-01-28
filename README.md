@@ -64,7 +64,7 @@ git clone https://github.com/tanuuuuuuu/dotfiles.git ~/dotfiles
 source ~/.zshrc  # またはターミナル再起動
 ```
 
-> **注意**
+> [!WARNING]
 > - 既存の設定ファイル（.zshrc, .zprofile, .config/nvim 等）は上書きされる。必要に応じて事前にバックアップを取ること
 > - Homebrew のインストール時に sudo パスワードを求められる場合がある
 
@@ -89,7 +89,7 @@ source ~/.zshrc  # またはターミナル再起動
 ~/dotfiles/macos.sh
 ```
 
-> **注意**
+> [!WARNING]
 > - システムフォルダの英語表示に sudo パスワードが必要
 > - 設定反映のため、実行後に再ログインまたは再起動を推奨
 

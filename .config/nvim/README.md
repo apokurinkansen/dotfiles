@@ -54,7 +54,8 @@ nvim/
 └── neovim.yml            # Selene 用 vim グローバル定義
 ```
 
-> **Note**: 「未使用」と記載のファイルは AstroNvim テンプレートのサンプル。必要に応じて有効化できる（詳細は「テンプレートファイルについて」を参照）。
+> [!NOTE]
+> 「未使用」と記載のファイルは AstroNvim テンプレートのサンプル。必要に応じて有効化できる（詳細は「テンプレートファイルについて」を参照）。
 
 ## 主なカスタマイズ
 
@@ -83,6 +84,7 @@ nvim/
 | im-select | 追加 | Insert モードを抜けたとき IME を英語に切替 | Normal モードに戻ったとき日本語入力が残る問題を解消 |
 | lualine | 追加 | モード表示付きステータスライン | 現在のモード（Normal/Insert/Visual 等）を色付きで表示 |
 
+> [!NOTE]
 > **種別**: 標準 = AstroNvim プリインストール（設定カスタマイズ）、追加 = 後から追加したプラグイン
 
 ## プラグイン設定
@@ -152,7 +154,8 @@ AstroNvim のコア機能をカスタマイズ。
 | `default_command` | macism | macOS 用 IME 切替コマンド |
 | 切替タイミング | InsertLeave, FocusGained | Insert モードを抜けたとき、ウィンドウにフォーカスが戻ったとき |
 
-> **Note**: `macism` コマンドが必要。`brew install macism` でインストール。
+> [!NOTE]
+> `macism` コマンドが必要。`brew install macism` でインストール。
 
 ### neo-tree.lua - ファイルツリー
 
