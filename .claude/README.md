@@ -14,13 +14,12 @@ Claude Code のユーザーレベル設定。`~/.claude/` にシンボリック�
 │   └── confirm.wav    # 確認要求時
 └── skills/            # カスタムスキル
     ├── agent-creator/
-    ├── canvas-design/
     ├── claude-md/
     ├── doc-coauthoring/
     ├── git-cleanup/
     ├── internal-comms/
-    ├── skill-creator/
-    └── theme-factory/
+    ├── quota/
+    └── skill-creator/
 ```
 
 ## ファイル説明
@@ -47,13 +46,12 @@ Claude Code の動作設定。主な項目：
 | スキル | 説明 | 提供元 |
 |--------|------|--------|
 | agent-creator | サブエージェントの作成・改善ガイド | 自作 |
-| [canvas-design](https://github.com/anthropics/skills/tree/main/skills/canvas-design) | ポスターやデザインの作成 | Anthropic 公式 |
 | claude-md | CLAUDE.md の作成・改善支援 | 自作 |
 | [doc-coauthoring](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) | ドキュメント共同作成ワークフロー | Anthropic 公式 |
 | git-cleanup | マージ済みブランチの整理 | 自作 |
 | [internal-comms](https://github.com/anthropics/skills/tree/main/skills/internal-comms) | 社内コミュニケーション文書の作成 | Anthropic 公式 |
+| quota | Claude Code の API 使用量クォータの確認 | 自作 |
 | [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator) | スキルの作成ガイド | Anthropic 公式 |
-| [theme-factory](https://github.com/anthropics/skills/tree/main/skills/theme-factory) | アーティファクトへのテーマ適用 | Anthropic 公式 |
 
 ## カスタマイズ
 
