@@ -210,3 +210,7 @@ research.md をもとに作業ディレクトリの `plan.md` を作成する。
 **セッション管理:**
 - 可能な限り、リサーチから実装まで1つのセッションで通す（コンテキスト維持のため）
 - plan.md はコンテキスト圧縮後も参照できる永続的なアーティファクトとして機能する
+
+## 参考
+
+- [How I Use Claude Code](https://boristane.com/blog/how-i-use-claude-code/) - Boris Tane
