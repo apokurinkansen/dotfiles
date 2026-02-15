@@ -9,6 +9,7 @@
 ```
 .config/
 ├── ghostty/           # ターミナルエミュレータ
+├── git/               # Git グローバル設定
 ├── mise/              # ランタイムバージョン管理
 ├── nvim/              # エディタ（詳細は nvim/README.md）
 ├── raycast/           # ランチャー
@@ -38,6 +39,25 @@ GPU ベースの高速ターミナルエミュレータ。macOS / Linux 対応�
 | ウィンドウ | フルスクリーン起動、パディング 16px |
 | カーソル | ブロック型、点滅なし |
 | キーバインド | 左 Option キーを Alt として使用（macOS の Option は通常特殊文字入力だが、Zellij のキーバインドで Alt として使うため） |
+
+## Git
+
+グローバル gitignore の設定。全リポジトリ共通で機密情報の誤コミット防止、OS/エディタの不要ファイル除外をガードレールとして提供する。
+
+### ファイル構成
+
+| ファイル | 説明 |
+|----------|------|
+| `ignore` | グローバル gitignore（`~/.config/git/ignore` に配置すると Git が自動認識） |
+
+### 除外対象
+
+| カテゴリ | パターン例 |
+|----------|------------|
+| 機密情報 | `.env`, `*.pem`, `*.key`, `credentials.json`, `service-account*.json` |
+| OS 生成ファイル | `.DS_Store`, `Thumbs.db` |
+| エディタ | `*.swp`, `*.swo`, `*~` |
+| 一時ファイル | `tmp/` |
 
 ## [mise](https://mise.jdx.dev/)
 

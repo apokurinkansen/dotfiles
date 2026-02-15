@@ -85,6 +85,9 @@ ln -sf "$DOTFILES_DIR/.config/ghostty/bg.jpg" ~/.config/ghostty/bg.jpg
 
 ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 
+mkdir -p ~/.config/git
+ln -sf "$DOTFILES_DIR/.config/git/ignore" ~/.config/git/ignore
+
 # raycast script-commandsはディレクトリ全体をシンボリックリンク
 if [ -d ~/.config/raycast/script-commands ] && [ ! -L ~/.config/raycast/script-commands ]; then
     rm -rf ~/.config/raycast/script-commands
