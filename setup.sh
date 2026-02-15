@@ -45,6 +45,12 @@ if [ -f "$DOTFILES_DIR/.config/uv/uv-tools.txt" ]; then
     done < "$DOTFILES_DIR/.config/uv/uv-tools.txt"
 fi
 
+# Playwright ブラウザのインストール
+if command -v playwright &> /dev/null; then
+    echo "Installing Playwright browsers..."
+    playwright install chromium
+fi
+
 # ==================================================
 # Claude Code
 # ==================================================
