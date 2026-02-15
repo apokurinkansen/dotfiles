@@ -21,7 +21,8 @@ Claude Code のユーザーレベル設定。`~/.claude/` にシンボリック�
     ├── git-cleanup/
     ├── grok-search/
     ├── internal-comms/
-    └── skill-creator/
+    ├── skill-creator/
+    └── structured-workflow/
 ```
 
 ## ファイル説明
@@ -54,6 +55,7 @@ Claude Code の動作設定。主な項目：
 | [grok-search](skills/grok-search/README.md) | Grok API で X の投稿を検索・要約 | 自作 |
 | [internal-comms](https://github.com/anthropics/skills/tree/main/skills/internal-comms) | 社内コミュニケーション文書の作成 | Anthropic 公式 |
 | [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator) | スキルの作成ガイド | Anthropic 公式 |
+| structured-workflow | リサーチ・計画・実装の構造化ワークフロー | 自作 |
 
 ## カスタマイズ
 
