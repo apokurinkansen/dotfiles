@@ -15,6 +15,7 @@ token.json
 .local/
 .cache/
 .claude/settings.local.json
+.claude/tmp/
 
 # OS生成ファイル
 .DS_Store

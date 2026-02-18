@@ -1,9 +1,5 @@
 {
   "permissions": {
-    "deny": [
-      "Bash(rm *)",
-      "Bash(rmdir *)"
-    ],
     "allow": [
       "Bash(brew --prefix:*)",
       "Bash(brew --version:*)",
@@ -49,16 +45,17 @@
       "Bash(pwd:*)",
       "Bash(tree:*)",
       "Bash(TZ=Asia/Tokyo date:*)",
+      "Bash(bash ~/.claude/skills/grok-search/scripts/search.sh:*)",
       "Bash(wc:*)",
       "Bash(which:*)",
       "Read",
       "WebFetch",
       "WebSearch"
+    ],
+    "deny": [
+      "Bash(rm *)",
+      "Bash(rmdir *)"
     ]
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh"
   },
   "hooks": {
     "Stop": [
@@ -81,5 +78,9 @@
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
   }
 }

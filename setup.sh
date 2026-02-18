@@ -150,6 +150,12 @@ if [ -f "$DOTFILES_DIR/.config/uv/uv-tools.txt" ]; then
     done < "$DOTFILES_DIR/.config/uv/uv-tools.txt"
 fi
 
+# Playwright ブラウザのインストール
+if command -v playwright &> /dev/null; then
+    echo "Installing Playwright browsers..."
+    playwright install chromium
+fi
+
 # ==================================================
 # Claude Code
 # ==================================================
@@ -170,6 +176,7 @@ fi
 # ==================================================
 # 設定ファイル（シンボリックリンク）
 # ==================================================
+ln -sf "$DOTFILES_DIR/.gitconfig" ~/.gitconfig
 ln -sf "$DOTFILES_DIR/.zprofile" ~/.zprofile
 ln -sf "$DOTFILES_DIR/.zshrc" ~/.zshrc
 
@@ -192,6 +199,9 @@ fi
 
 ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 
+mkdir -p ~/.config/git
+ln -sf "$DOTFILES_DIR/.config/git/ignore" ~/.config/git/ignore
+
 # raycast script-commands（macOS専用、WSLではスキップ）
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if [ -d ~/.config/raycast/script-commands ] && [ ! -L ~/.config/raycast/script-commands ]; then
@@ -213,6 +223,7 @@ ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" ~/.claude/CLAUDE.md
 ln -sf "$DOTFILES_DIR/.claude/settings.json" ~/.claude/settings.json
 ln -sf "$DOTFILES_DIR/.claude/statusline.sh" ~/.claude/statusline.sh
 ln -sf "$DOTFILES_DIR/.claude/play-sound.sh" ~/.claude/play-sound.sh
+ln -sfn "$DOTFILES_DIR/.claude/scripts" ~/.claude/scripts
 
 # skillsはディレクトリ全体をシンボリックリンク
 if [ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ]; then

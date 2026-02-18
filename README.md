@@ -2,6 +2,9 @@
 
 macOS / Windows (WSL Ubuntu) 対応の個人設定ファイル管理リポジトリ。
 
+![開発環境](assets/dev-environment.png)
+*Ghostty + Zellij 上で AstroNvim と Claude Code を使った開発環境*
+
 シェル、エディタ、ターミナル等の設定をシンボリックリンクで管理する。`~/dotfiles/` に clone して使用。
 
 > **注意**: Windows環境ではWSLのUbuntuを使用します。PowerShellは使用しません。
@@ -88,7 +91,7 @@ git clone https://github.com/tanuuuuuuu/dotfiles.git ~/dotfiles
 source ~/.zshrc  # またはターミナル再起動
 ```
 
-> **注意**
+> [!WARNING]
 > - 既存の設定ファイル（.zshrc, .zprofile, .config/nvim 等）は上書きされる。必要に応じて事前にバックアップを取ること
 > - Homebrew のインストール時に sudo パスワードを求められる場合がある
 
@@ -166,7 +169,7 @@ Windows Terminal の設定ファイルを適用する場合:
 ~/dotfiles/macos.sh
 ```
 
-> **注意**
+> [!WARNING]
 > - システムフォルダの英語表示に sudo パスワードが必要
 > - 設定反映のため、実行後に再ログインまたは再起動を推奨
 
