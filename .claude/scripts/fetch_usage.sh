@@ -1,15 +1,28 @@
 #!/bin/bash
-# macOS キーチェーンから Claude Code の OAuth トークンを取得し、
+# Claude Code の OAuth トークンを取得し、
 # Anthropic の使用量 API を呼び出して結果を返すスクリプト。
-# macOS 専用（security コマンドを使用）。
+# macOS: キーチェーン（security コマンド）から取得
+# Linux: ~/.claude/.credentials.json から取得
 
 set -euo pipefail
 
-# キーチェーンからトークン取得
-CREDS=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null) || {
-    echo '{"error": "キーチェーンから認証情報を取得できませんでした。Claude Code で認証済みか確認してください。"}'
-    exit 1
-}
+OS=$(uname -s)
+
+if [[ "$OS" == "Darwin" ]]; then
+    # macOS: キーチェーンからトークン取得
+    CREDS=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null) || {
+        echo '{"error": "キーチェーンから認証情報を取得できませんでした。Claude Code で認証済みか確認してください。"}'
+        exit 1
+    }
+else
+    # Linux: credentials ファイルからトークン取得
+    CREDS_FILE="$HOME/.claude/.credentials.json"
+    if [ ! -f "$CREDS_FILE" ]; then
+        echo '{"error": "認証情報ファイルが見つかりません。Claude Code で認証済みか確認してください。"}'
+        exit 1
+    fi
+    CREDS=$(cat "$CREDS_FILE")
+fi
 
 TOKEN=$(echo "$CREDS" | jq -r '.claudeAiOauth.accessToken // empty')
 if [ -z "$TOKEN" ]; then

@@ -34,6 +34,11 @@ if [[ "$OSTYPE" == "darwin"* ]] && command -v macism &> /dev/null; then
 fi
 
 # ==================================================
+# direnv（ディレクトリごとの環境変数管理）
+# ==================================================
+eval "$(direnv hook zsh)"
+
+# ==================================================
 # プロンプト（Starship）
 # ==================================================
 eval "$(starship init zsh)"
@@ -55,8 +60,8 @@ setopt correct
 alias vim='nvim'
 
 # ==================================================
-# Zellij自動起動（Ghostty使用時のみ、macOS専用）
+# Zellij自動起動（Ghostty または WSL 使用時）
 # ==================================================
-if [[ "$OSTYPE" == "darwin"* ]] && [[ "$TERM" == "xterm-ghostty" ]] && [[ -z "$ZELLIJ" ]]; then
+if [[ -z "$ZELLIJ" ]] && { [[ "$TERM" == "xterm-ghostty" ]] || [[ -n "$WSL_DISTRO_NAME" ]]; }; then
   zellij
 fi

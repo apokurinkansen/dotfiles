@@ -43,13 +43,15 @@
 
 ### Bash コマンド
 
-- ファイル削除は `rm` ではなく `trash` コマンドを使用（復元可能にするため）
+- ファイル削除は macOS 環境では `rm` ではなく `trash` コマンドを使用（復元可能にするため）。Linux / WSL 環境では `rm` を使用する
 - GitHub 情報の取得には `gh` コマンドを使用
 - 「最近」「直近」など現在日時が必要な場合は、必ず `date` コマンドで取得
-- `brew install` 実行後は `~/dotfiles/Brewfile` にも追加する
-  - 通常パッケージ: `brew "パッケージ名"`
-  - cask: `cask "パッケージ名"`
-  - tap が必要な場合: `tap "タップ名"` も追加
+- `brew install` 実行後は `~/dotfiles/Brewfile*` にも追加する
+  - 両 OS 共通パッケージ: `Brewfile` に `brew "パッケージ名"`
+  - macOS 専用パッケージ: `Brewfile.macos` に追加
+    - cask: `cask "パッケージ名"`
+    - tap が必要な場合: `tap "タップ名"` も追加
+  - Linux 専用パッケージ: `Brewfile.linux` に追加
 
 ### 一時ファイル
 

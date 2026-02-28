@@ -36,7 +36,9 @@ macOS / Windows (WSL Ubuntu) 対応の個人設定ファイル管理リポジト
 ### macOS / WSL Ubuntu (共通)
 - `.zprofile` - ログインシェル設定
 - `.zshrc` - インタラクティブシェル設定
-- `Brewfile` - Homebrew パッケージ一覧
+- `Brewfile` - Homebrew パッケージ一覧（共通）
+- `Brewfile.macos` - macOS 専用パッケージ（tap, cask 含む）
+- `Brewfile.linux` - Linux 専用パッケージ
 - `.config/` - 各種ツールの設定
 - `.claude/` - Claude Code の設定（スキル含む）
 - `setup.sh` - 初期セットアップスクリプト（macOS/WSL共通）

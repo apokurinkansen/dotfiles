@@ -9,7 +9,7 @@ DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 if ! command -v brew &> /dev/null; then
     echo "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    # アーキテクチャに応じてパスを設定
+    # アーキテクチャ/OS に応じてパスを設定
     if [[ -f /opt/homebrew/bin/brew ]]; then
         # Apple Silicon
         eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -22,28 +22,49 @@ if ! command -v brew &> /dev/null; then
     fi
 fi
 
+OS=$(uname -s)
+
 brew bundle --file="$DOTFILES_DIR/Brewfile"
+if [[ "$OS" == "Darwin" ]]; then
+    brew bundle --file="$DOTFILES_DIR/Brewfile.macos"
+elif [[ "$OS" == "Linux" ]]; then
+    brew bundle --file="$DOTFILES_DIR/Brewfile.linux"
+fi
+
+# ==================================================
+# デフォルトシェルを zsh に変更（Linux のみ）
+# ==================================================
+if [[ "$OS" == "Linux" ]]; then
+    ZSH_PATH=$(which zsh)
+    if [[ "$SHELL" != "$ZSH_PATH" ]]; then
+        echo "Changing default shell to zsh..."
+        if ! grep -q "$ZSH_PATH" /etc/shells; then
+            echo "$ZSH_PATH" | sudo tee -a /etc/shells
+        fi
+        chsh -s "$ZSH_PATH"
+    fi
+fi
 
 # ==================================================
 # WSL環境: aptでGUIアプリをインストール
 # ==================================================
 if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -f /proc/version ]] && grep -q Microsoft /proc/version; then
     echo "WSL環境を検出しました。GUIアプリとCLIツールをインストールします..."
-    
+
     # 必要なツールをインストール
     sudo apt-get update
     sudo apt-get install -y wget curl gdebi-core unzip apt-transport-https ca-certificates gnupg lsb-release
-    
+
     # trash-cli (trash の Linux 代替)
     if ! command -v trash &> /dev/null; then
         echo "Installing trash-cli..."
         sudo apt-get install -y trash-cli 2>/dev/null || true
     fi
-    
+
     # 一時ディレクトリ
     TEMP_DIR=$(mktemp -d)
     cd "$TEMP_DIR"
-    
+
     # Discord (.debパッケージ)
     if ! command -v discord &> /dev/null; then
         echo "Installing Discord..."
@@ -53,7 +74,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -f /proc/version ]] && grep -q Microsof
             sudo apt-get install -f -y 2>/dev/null || true
         fi
     fi
-    
+
     # Slack (.debパッケージ)
     if ! command -v slack &> /dev/null; then
         echo "Installing Slack..."
@@ -64,7 +85,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -f /proc/version ]] && grep -q Microsof
             sudo apt-get install -f -y 2>/dev/null || true
         fi
     fi
-    
+
     # Notion (.debパッケージ - notion-repackagedを使用)
     if ! command -v notion-app &> /dev/null; then
         echo "Installing Notion..."
@@ -77,7 +98,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -f /proc/version ]] && grep -q Microsof
             fi
         fi
     fi
-    
+
     # Obsidian (.debパッケージ)
     if ! command -v obsidian &> /dev/null; then
         echo "Installing Obsidian..."
@@ -90,7 +111,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -f /proc/version ]] && grep -q Microsof
             fi
         fi
     fi
-    
+
     # Google Chrome (aptリポジトリを追加)
     if ! command -v google-chrome &> /dev/null && ! command -v google-chrome-stable &> /dev/null; then
         echo "Installing Google Chrome..."
@@ -101,7 +122,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -f /proc/version ]] && grep -q Microsof
         fi
         sudo apt-get install -y google-chrome-stable 2>/dev/null || true
     fi
-    
+
     # 1Password CLI (バイナリを直接インストール)
     if ! command -v op &> /dev/null; then
         echo "Installing 1Password CLI..."
@@ -116,11 +137,11 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] && [[ -f /proc/version ]] && grep -q Microsof
             rm -rf /tmp/op-install 2>/dev/null || true
         fi
     fi
-    
+
     # クリーンアップ
     cd "$HOME"
     rm -rf "$TEMP_DIR"
-    
+
     echo ""
     echo "WSL環境のGUIアプリインストールが完了しました。"
     echo "注意: WSL環境でGUIアプリを実行するには、WSLg（Windows 11推奨）またはX11転送が必要です。"
@@ -190,26 +211,24 @@ mkdir -p ~/.config/zellij/layouts
 ln -sf "$DOTFILES_DIR/.config/zellij/config.kdl" ~/.config/zellij/config.kdl
 ln -sf "$DOTFILES_DIR/.config/zellij/layouts/default.kdl" ~/.config/zellij/layouts/default.kdl
 
-# ghostty設定（macOS専用、WSLではスキップ）
-if [[ "$OSTYPE" == "darwin"* ]]; then
+# macOS 専用の設定リンク
+if [[ "$OS" == "Darwin" ]]; then
     mkdir -p ~/.config/ghostty
     ln -sf "$DOTFILES_DIR/.config/ghostty/config" ~/.config/ghostty/config
     ln -sf "$DOTFILES_DIR/.config/ghostty/bg.jpg" ~/.config/ghostty/bg.jpg
-fi
 
-ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
-
-mkdir -p ~/.config/git
-ln -sf "$DOTFILES_DIR/.config/git/ignore" ~/.config/git/ignore
-
-# raycast script-commands（macOS専用、WSLではスキップ）
-if [[ "$OSTYPE" == "darwin"* ]]; then
+    # raycast script-commandsはディレクトリ全体をシンボリックリンク
     if [ -d ~/.config/raycast/script-commands ] && [ ! -L ~/.config/raycast/script-commands ]; then
         rm -rf ~/.config/raycast/script-commands
     fi
     mkdir -p ~/.config/raycast
     ln -sfn "$DOTFILES_DIR/.config/raycast/script-commands" ~/.config/raycast/script-commands
 fi
+
+ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
+
+mkdir -p ~/.config/git
+ln -sf "$DOTFILES_DIR/.config/git/ignore" ~/.config/git/ignore
 
 # nvimはディレクトリ全体をシンボリックリンク
 if [ -d ~/.config/nvim ] && [ ! -L ~/.config/nvim ]; then
@@ -231,7 +250,10 @@ if [ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ]; then
 fi
 ln -sfn "$DOTFILES_DIR/.claude/skills" ~/.claude/skills
 
-ln -sf "$DOTFILES_DIR/.claude/sounds/complete_girl.wav" ~/.claude/sounds/complete_girl.wav
-ln -sf "$DOTFILES_DIR/.claude/sounds/confirm.wav" ~/.claude/sounds/confirm.wav
+# サウンドファイルは macOS のみ使用（afplay コマンド）
+if [[ "$OS" == "Darwin" ]]; then
+    ln -sf "$DOTFILES_DIR/.claude/sounds/complete_girl.wav" ~/.claude/sounds/complete_girl.wav
+    ln -sf "$DOTFILES_DIR/.claude/sounds/confirm.wav" ~/.claude/sounds/confirm.wav
+fi
 
 echo "Setup complete! Run 'source ~/.zshrc' to apply changes."

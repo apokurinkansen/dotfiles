@@ -1,6 +1,7 @@
 #!/bin/bash
 input=$(cat)
 
+OS=$(uname -s)
 MODEL=$(echo "$input" | jq -r '.model.display_name')
 CURRENT_DIR=$(echo "$input" | jq -r '.workspace.current_dir')
 DISPLAY_DIR=$(echo "$CURRENT_DIR" | sed "s|^$HOME|~|")
@@ -45,7 +46,11 @@ if [ "$USAGE" != "null" ] && [ "$CONTEXT_SIZE" != "null" ] && [ "$CONTEXT_SIZE" 
 
     # キャッシュの経過秒数を取得
     if [ -f "$QUOTA_CACHE" ]; then
-        CACHE_AGE=$(( $(date +%s) - $(stat -f %m "$QUOTA_CACHE") ))
+        if [[ "$OS" == "Darwin" ]]; then
+            CACHE_AGE=$(( $(date +%s) - $(stat -f %m "$QUOTA_CACHE") ))
+        else
+            CACHE_AGE=$(( $(date +%s) - $(stat -c %Y "$QUOTA_CACHE") ))
+        fi
     else
         CACHE_AGE=$(( QUOTA_CACHE_TTL + 1 ))
     fi
@@ -57,11 +62,16 @@ if [ "$USAGE" != "null" ] && [ "$CONTEXT_SIZE" != "null" ] && [ "$CONTEXT_SIZE" 
             if echo "$QUOTA_JSON" | jq -e '.five_hour' > /dev/null 2>&1; then
                 FIVE_H=$(echo "$QUOTA_JSON" | jq -r '.five_hour.utilization')
                 SEVEN_D=$(echo "$QUOTA_JSON" | jq -r '.seven_day.utilization')
-                # リセット時刻を epoch に変換 (macOS date)
+                # リセット時刻を epoch に変換
                 FIVE_H_RESET=$(echo "$QUOTA_JSON" | jq -r '.five_hour.resets_at' | sed 's/\.[0-9]*//' | sed 's/\([-+][0-9][0-9]\):\([0-9][0-9]\)$/\1\2/')
-                FIVE_H_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$FIVE_H_RESET" "+%s" 2>/dev/null || echo "0")
                 SEVEN_D_RESET=$(echo "$QUOTA_JSON" | jq -r '.seven_day.resets_at' | sed 's/\.[0-9]*//' | sed 's/\([-+][0-9][0-9]\):\([0-9][0-9]\)$/\1\2/')
-                SEVEN_D_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$SEVEN_D_RESET" "+%s" 2>/dev/null || echo "0")
+                if [[ "$OS" == "Darwin" ]]; then
+                    FIVE_H_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$FIVE_H_RESET" "+%s" 2>/dev/null || echo "0")
+                    SEVEN_D_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$SEVEN_D_RESET" "+%s" 2>/dev/null || echo "0")
+                else
+                    FIVE_H_EPOCH=$(date -d "$FIVE_H_RESET" "+%s" 2>/dev/null || echo "0")
+                    SEVEN_D_EPOCH=$(date -d "$SEVEN_D_RESET" "+%s" 2>/dev/null || echo "0")
+                fi
                 echo "$FIVE_H $SEVEN_D $FIVE_H_EPOCH $SEVEN_D_EPOCH" > "$QUOTA_CACHE"
             fi
         ) &

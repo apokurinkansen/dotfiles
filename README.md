@@ -48,7 +48,9 @@ macOS / Windows (WSL Ubuntu) 対応の個人設定ファイル管理リポジト
 .
 ├── .zprofile                      # ログインシェル設定（macOS/WSL共通）
 ├── .zshrc                         # インタラクティブシェル設定（macOS/WSL共通）
-├── Brewfile                       # Homebrew パッケージ（macOS/WSL共通）
+├── Brewfile                       # Homebrew パッケージ（共通）
+├── Brewfile.macos                 # macOS 専用パッケージ
+├── Brewfile.linux                 # Linux 専用パッケージ
 ├── setup.sh                       # セットアップスクリプト（macOS/WSL共通）
 ├── macos.sh                       # macOS: システム設定スクリプト
 ├── windows.sh                     # Windows: システム設定スクリプト（WSLから実行）
@@ -98,7 +100,7 @@ source ~/.zshrc  # またはターミナル再起動
 #### setup.sh の内容
 
 1. Homebrew をインストール（未インストールの場合）
-2. Brewfile のパッケージをインストール
+2. Brewfile のパッケージをインストール（共通 + macOS 専用）
 3. mise で Python をインストール
 4. uv をインストール
 5. uv-tools.txt に記載されたツールをインストール
@@ -134,14 +136,15 @@ source ~/.zshrc  # またはターミナル再起動
 #### setup.sh の内容（WSL環境）
 
 1. Homebrew (Linux版) をインストール（未インストールの場合）
-2. Brewfile のパッケージをインストール（CLIツールのみ、caskはスキップ）
-3. **GUIアプリをapt/.debでインストール**（Discord、Slack、Notion、Obsidian、Google Chrome、1Password CLI）
-4. mise で Python をインストール
-5. uv をインストール
-6. uv-tools.txt に記載されたツールをインストール
-7. Claude Code をインストール（未インストールの場合）
-8. Google Cloud SDK をインストール（未インストールの場合）
-9. シンボリックリンクを作成（Ghostty、Raycast設定はスキップ）
+2. Brewfile のパッケージをインストール（共通 + Linux 専用）
+3. デフォルトシェルを zsh に変更
+4. **GUIアプリをapt/.debでインストール**（Discord、Slack、Notion、Obsidian、Google Chrome、1Password CLI）
+5. mise で Python をインストール
+6. uv をインストール
+7. uv-tools.txt に記載されたツールをインストール
+8. Claude Code をインストール（未インストールの場合）
+9. Google Cloud SDK をインストール（未インストールの場合）
+10. シンボリックリンクを作成（Ghostty、Raycast設定はスキップ）
 
 > **注意**: WSL環境でGUIアプリを実行するには、WSLg（Windows 11推奨）またはX11転送が必要です。Windows 10の場合はWSLgが利用できないため、X11転送の設定が必要な場合があります。
 
@@ -241,7 +244,7 @@ WSL環境で使用するアプリ。
 - **Google Chrome**: 公式aptリポジトリを追加してインストール
 - **1Password CLI**: バイナリを直接インストール
 
-> **注意**: 
+> **注意**:
 > - 各アプリのインストールは、既にインストール済みの場合はスキップされます
 > - インストールに失敗してもスクリプトは続行されます
 > - GUIアプリを実行するには、WSLg（Windows 11推奨）が必要です
