@@ -1,93 +1,133 @@
 {
-  "$schema": "https://aka.ms/terminal-profiles-schema",
-  "defaultProfile": "{2c4de342-38b7-51cf-b940-2309a097f518}",
-  "profiles": {
-    "defaults": {
-      "font": {
-        "face": "HackGen35 Console",
-        "size": 14
-      },
-      "colorScheme": "GitHub Dark",
-      "cursorShape": "filledBox",
-      "cursorHeight": 1,
-      "antialiasingMode": "grayscale",
-      "snapOnInput": true,
-      "historySize": 10000,
-      "padding": "16, 16, 16, 16",
-      "opacity": 100,
-      "useAcrylic": false,
-      "backgroundImage": "",
-      "backgroundImageOpacity": 0.07,
-      "backgroundImageStretchMode": "uniformToFill"
-    },
-    "list": [
-      {
-        "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
-        "name": "Ubuntu",
-        "source": "Windows.Terminal.Wsl",
-        "hidden": false,
-        "colorScheme": "GitHub Dark",
-        "font": {
-          "face": "HackGen35 Console",
-          "size": 14
+    "$help": "https://aka.ms/terminal-documentation",
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "actions":
+    [
+        {
+            "command":
+            {
+                "action": "copy",
+                "singleLine": false
+            },
+            "id": "User.copy.644BA8F2"
         },
-        "startingDirectory": "~"
-      },
-      {
-        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-        "name": "PowerShell",
-        "commandline": "powershell.exe",
-        "hidden": true,
-        "colorScheme": "GitHub Dark"
-      },
-      {
-        "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
-        "name": "Command Prompt",
-        "commandline": "cmd.exe",
-        "hidden": true,
-        "colorScheme": "GitHub Dark"
-      },
-      {
-        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-        "name": "Azure Cloud Shell",
-        "source": "Windows.Terminal.Azure",
-        "hidden": true
-      }
-    ]
-  },
-  "schemes": [
+        {
+            "command": "paste",
+            "id": "User.paste"
+        },
+        {
+            "command":
+            {
+                "action": "splitPane",
+                "split": "auto",
+                "splitMode": "duplicate"
+            },
+            "id": "User.splitPane.A6751878"
+        },
+        {
+            "command": "find",
+            "id": "User.find"
+        }
+    ],
+    "copyFormatting": "none",
+    "copyOnSelect": false,
+    "defaultProfile": "{71c00d05-ab71-5f1c-a5a8-b8eab90ac929}",
+    "keybindings":
+    [
+        {
+            "id": "User.copy.644BA8F2",
+            "keys": "ctrl+c"
+        },
+        {
+            "id": "User.find",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "id": "User.paste",
+            "keys": "ctrl+v"
+        },
+        {
+            "id": "User.splitPane.A6751878",
+            "keys": "alt+shift+d"
+        }
+    ],
+    "launchMode": "maximized",
+    "newTabMenu":
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
+    "profiles":
     {
-      "name": "GitHub Dark",
-      "background": "#1e1e1e",
-      "black": "#1e1e1e",
-      "blue": "#7aa2f7",
-      "brightBlack": "#1e1e1e",
-      "brightBlue": "#7aa2f7",
-      "brightCyan": "#7dcfff",
-      "brightGreen": "#9ece6a",
-      "brightPurple": "#bb9af7",
-      "brightRed": "#f44747",
-      "brightWhite": "#d4d4d4",
-      "brightYellow": "#e0af68",
-      "cyan": "#7dcfff",
-      "foreground": "#d4d4d4",
-      "green": "#9ece6a",
-      "purple": "#bb9af7",
-      "red": "#f44747",
-      "white": "#d4d4d4",
-      "yellow": "#e0af68"
-    }
-  ],
-  "keybindings": [
-    {
-      "command": {
-        "action": "sendInput",
-        "input": "\u001b\r"
-      },
-      "keys": "shift+enter"
-    }
-  ],
-  "startupActions": "newTab",
-  "theme": "system",
-  "requestedTheme": "dark"
+        "defaults":
+        {
+            "colorScheme": "GitHub Dark",
+            "cursorShape": "filledBox",
+            "font":
+            {
+                "face": "HackGen35 Console",
+                "size": 14
+            },
+            "opacity": 90,
+            "padding": "16",
+            "useAcrylic": true
+        },
+        "list":
+        [
+            {
+                "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "hidden": true,
+                "name": "Windows PowerShell"
+            },
+            {
+                "commandline": "%SystemRoot%\\System32\\cmd.exe",
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "hidden": true,
+                "name": "コマンド プロンプト"
+            },
+            {
+                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                "hidden": true,
+                "name": "Azure Cloud Shell",
+                "source": "Windows.Terminal.Azure"
+            },
+            {
+                "guid": "{71c00d05-ab71-5f1c-a5a8-b8eab90ac929}",
+                "hidden": false,
+                "name": "Ubuntu",
+                "source": "Microsoft.WSL"
+            }
+        ]
+    },
+    "schemes":
+    [
+        {
+            "background": "#24292E",
+            "black": "#24292E",
+            "blue": "#79B8FF",
+            "brightBlack": "#959DA5",
+            "brightBlue": "#79B8FF",
+            "brightCyan": "#73E3FF",
+            "brightGreen": "#85E89D",
+            "brightPurple": "#B392F0",
+            "brightRed": "#F97583",
+            "brightWhite": "#FAFBFC",
+            "brightYellow": "#FFEA7F",
+            "cursorColor": "#C8E1FF",
+            "cyan": "#73E3FF",
+            "foreground": "#D1D5DA",
+            "green": "#85E89D",
+            "name": "GitHub Dark",
+            "purple": "#B392F0",
+            "red": "#F97583",
+            "selectionBackground": "#3392FF",
+            "white": "#D1D5DA",
+            "yellow": "#FFEA7F"
+        }
+    ],
+    "theme": "dark",
+    "themes": [],
+    "warning.confirmCloseAllTabs": false
 }
