@@ -36,7 +36,9 @@ fi
 # ==================================================
 # direnv（ディレクトリごとの環境変数管理）
 # ==================================================
-eval "$(direnv hook zsh)"
+if command -v direnv &> /dev/null; then
+    eval "$(direnv hook zsh)"
+fi
 
 # ==================================================
 # プロンプト（Starship）
@@ -62,6 +64,6 @@ alias vim='nvim'
 # ==================================================
 # Zellij自動起動（Ghostty または WSL 使用時）
 # ==================================================
-if [[ -z "$ZELLIJ" ]] && { [[ "$TERM" == "xterm-ghostty" ]] || [[ -n "$WSL_DISTRO_NAME" ]]; }; then
+if [[ -o interactive ]] && [[ -z "$ZELLIJ" ]] && { [[ "$TERM" == "xterm-ghostty" ]] || [[ -n "$WSL_DISTRO_NAME" ]]; }; then
   zellij
 fi
