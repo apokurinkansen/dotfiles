@@ -198,6 +198,7 @@ fi
 # 設定ファイル（シンボリックリンク）
 # ==================================================
 ln -sf "$DOTFILES_DIR/.gitconfig" ~/.gitconfig
+ln -sf "$DOTFILES_DIR/.bash_profile" ~/.bash_profile
 ln -sf "$DOTFILES_DIR/.zprofile" ~/.zprofile
 ln -sf "$DOTFILES_DIR/.zshrc" ~/.zshrc
 
