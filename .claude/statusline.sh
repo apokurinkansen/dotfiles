@@ -11,102 +11,41 @@ GREEN=$'\033[38;2;63;185;80m'
 YELLOW=$'\033[38;2;210;153;34m'
 MAGENTA=$'\033[38;2;188;140;255m'
 RED=$'\033[38;2;248;81;85m'
+DIM=$'\033[38;2;74;88;92m'
 RESET=$'\033[0m'
 
-# 相対時間をフォーマット (epoch → "23m", "1h30m" 等)
-format_remaining() {
-    local diff=$(( $1 - $2 ))
-    if [ "$diff" -le 0 ]; then
-        echo "0m"
-    elif [ "$diff" -lt 3600 ]; then
-        echo "$((diff / 60))m"
-    else
-        local h=$((diff / 3600))
-        local m=$(((diff % 3600) / 60))
-        if [ "$m" -eq 0 ]; then echo "${h}h"; else echo "${h}h${m}m"; fi
+# 使用率に応じた色を返す (0-49:緑, 50-79:黄, 80-100:赤)
+color_for_pct() {
+    local pct=$1
+    if [ "$pct" -ge 80 ]; then echo "$RED"
+    elif [ "$pct" -ge 50 ]; then echo "$YELLOW"
+    else echo "$GREEN"
     fi
 }
 
-# コンテキストウィンドウ使用率を計算
-CONTEXT_SIZE=$(echo "$input" | jq -r '.context_window.context_window_size')
-USAGE=$(echo "$input" | jq '.context_window.current_usage')
+# プログレスバーを生成 (10セグメント, ▰▱)
+make_bar() {
+    local pct=$1
+    local filled=$((pct * 10 / 100))
+    [ "$filled" -gt 10 ] && filled=10
+    local empty=$((10 - filled))
+    local bar=""
+    [ "$filled" -gt 0 ] && bar=$(printf "%${filled}s" | tr ' ' '■')
+    [ "$empty" -gt 0 ] && bar="${bar}$(printf "%${empty}s" | tr ' ' '□')"
+    echo "$bar"
+}
 
-# コンテキストウィンドウ + quota 情報を組み立て
-CONTEXT_QUOTA=""
-if [ "$USAGE" != "null" ] && [ "$CONTEXT_SIZE" != "null" ] && [ "$CONTEXT_SIZE" != "0" ]; then
-    CURRENT_TOKENS=$(echo "$USAGE" | jq '.input_tokens + .cache_creation_input_tokens + .cache_read_input_tokens')
-    PERCENT=$((CURRENT_TOKENS * 100 / CONTEXT_SIZE))
-    CTX_PART="${MAGENTA}ctx:${PERCENT}%${RESET}"
-
-    # Quota キャッシュ読み取り・バックグラウンド更新
-    QUOTA_CACHE="/tmp/claude-quota-cache"
-    QUOTA_CACHE_TTL=60
-    QUOTA_PART=""
-
-    # キャッシュの経過秒数を取得
-    if [ -f "$QUOTA_CACHE" ]; then
-        CACHE_AGE=$(( $(date +%s) - $(stat -f %m "$QUOTA_CACHE") ))
-    else
-        CACHE_AGE=$(( QUOTA_CACHE_TTL + 1 ))
+# epoch → JST のリセット時刻文字列
+format_reset_time() {
+    local epoch=$1
+    if [ -z "$epoch" ] || [ "$epoch" = "0" ]; then
+        echo ""
+        return
     fi
+    TZ=Asia/Tokyo date -j -f "%s" "$epoch" "+%-m/%-d %-H:%M" 2>/dev/null || echo ""
+}
 
-    # キャッシュが古い場合はバックグラウンドで更新
-    if [ "$CACHE_AGE" -gt "$QUOTA_CACHE_TTL" ]; then
-        (
-            QUOTA_JSON=$(bash ~/.claude/scripts/fetch_usage.sh 2>/dev/null)
-            if echo "$QUOTA_JSON" | jq -e '.five_hour' > /dev/null 2>&1; then
-                FIVE_H=$(echo "$QUOTA_JSON" | jq -r '.five_hour.utilization')
-                SEVEN_D=$(echo "$QUOTA_JSON" | jq -r '.seven_day.utilization')
-                # リセット時刻を epoch に変換 (macOS date)
-                FIVE_H_RESET=$(echo "$QUOTA_JSON" | jq -r '.five_hour.resets_at' | sed 's/\.[0-9]*//' | sed 's/\([-+][0-9][0-9]\):\([0-9][0-9]\)$/\1\2/')
-                FIVE_H_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$FIVE_H_RESET" "+%s" 2>/dev/null || echo "0")
-                SEVEN_D_RESET=$(echo "$QUOTA_JSON" | jq -r '.seven_day.resets_at' | sed 's/\.[0-9]*//' | sed 's/\([-+][0-9][0-9]\):\([0-9][0-9]\)$/\1\2/')
-                SEVEN_D_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$SEVEN_D_RESET" "+%s" 2>/dev/null || echo "0")
-                echo "$FIVE_H $SEVEN_D $FIVE_H_EPOCH $SEVEN_D_EPOCH" > "$QUOTA_CACHE"
-            fi
-        ) &
-    fi
-
-    # キャッシュから quota 値を読み取り
-    if [ -f "$QUOTA_CACHE" ]; then
-        read -r FIVE_H SEVEN_D FIVE_H_EPOCH SEVEN_D_EPOCH < "$QUOTA_CACHE"
-        if [ -n "$FIVE_H" ] && [ -n "$SEVEN_D" ]; then
-            FIVE_H_INT=$(printf "%.0f" "$FIVE_H")
-            SEVEN_D_INT=$(printf "%.0f" "$SEVEN_D")
-            NOW=$(date +%s)
-
-            # 5h の色分け + 条件付きリセット時間
-            FIVE_H_COLOR="$RESET"
-            FIVE_H_RESET_STR=""
-            if [ "$FIVE_H_INT" -ge 90 ]; then
-                FIVE_H_COLOR="$RED"
-            elif [ "$FIVE_H_INT" -ge 70 ]; then
-                FIVE_H_COLOR="$YELLOW"
-            fi
-            if [ "$FIVE_H_INT" -ge 70 ] && [ -n "$FIVE_H_EPOCH" ] && [ "$FIVE_H_EPOCH" != "0" ]; then
-                FIVE_H_RESET_STR=" ↻$(format_remaining "$FIVE_H_EPOCH" "$NOW")"
-            fi
-
-            # 7d の色分け + 条件付きリセット時間
-            SEVEN_D_COLOR="$RESET"
-            SEVEN_D_RESET_STR=""
-            if [ "$SEVEN_D_INT" -ge 90 ]; then
-                SEVEN_D_COLOR="$RED"
-            elif [ "$SEVEN_D_INT" -ge 70 ]; then
-                SEVEN_D_COLOR="$YELLOW"
-            fi
-            if [ "$SEVEN_D_INT" -ge 70 ] && [ -n "$SEVEN_D_EPOCH" ] && [ "$SEVEN_D_EPOCH" != "0" ]; then
-                SEVEN_D_RESET_STR=" ↻$(format_remaining "$SEVEN_D_EPOCH" "$NOW")"
-            fi
-
-            QUOTA_PART=" (${FIVE_H_COLOR}5h:${FIVE_H_INT}%${FIVE_H_RESET_STR}${RESET}, ${SEVEN_D_COLOR}7d:${SEVEN_D_INT}%${SEVEN_D_RESET_STR}${RESET})"
-        fi
-    fi
-
-    CONTEXT_QUOTA=" | ${CTX_PART}${QUOTA_PART}"
-fi
-
-# Gitブランチとdirty状態を取得
+# --- 1行目: ディレクトリ (ブランチ) ---
 GIT_INFO=""
 if git -C "$CURRENT_DIR" rev-parse --git-dir > /dev/null 2>&1; then
     BRANCH=$(git -C "$CURRENT_DIR" branch --show-current 2>/dev/null)
@@ -115,8 +54,76 @@ if git -C "$CURRENT_DIR" rev-parse --git-dir > /dev/null 2>&1; then
         if [ -n "$(git -C "$CURRENT_DIR" status --porcelain 2>/dev/null)" ]; then
             DIRTY="${YELLOW}*${RESET}"
         fi
-        GIT_INFO=" | ${GREEN}${BRANCH}${RESET}${DIRTY}"
+        GIT_INFO=" (${BRANCH}${DIRTY})"
     fi
 fi
 
-echo -e "[$MODEL] ${BLUE}${DISPLAY_DIR}${RESET}${GIT_INFO}${CONTEXT_QUOTA}"
+echo -e "${DISPLAY_DIR}${GIT_INFO}"
+
+# --- 2行目: コンテキストウィンドウ ---
+PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
+[ -z "$PCT" ] || [ "$PCT" = "null" ] && PCT=0
+CTX_COLOR=$(color_for_pct "$PCT")
+CTX_BAR=$(make_bar "$PCT")
+CTX_PCT=$(printf "%3d" "$PCT")
+COMPACTIONS=$(echo "$input" | jq -r '.context_window.num_compactions // 0')
+[ -z "$COMPACTIONS" ] || [ "$COMPACTIONS" = "null" ] && COMPACTIONS=0
+CTX_COMPACT="  ${DIM}${COMPACTIONS} compact${RESET}"
+echo -e "ctx ${CTX_COLOR}${CTX_BAR} ${CTX_PCT}%${RESET}${CTX_COMPACT}"
+
+# --- 3-4行目: レートリミット (キャッシュ付き) ---
+QUOTA_CACHE="/tmp/claude-quota-cache"
+QUOTA_CACHE_TTL=60
+
+# キャッシュの経過秒数
+if [ -f "$QUOTA_CACHE" ]; then
+    CACHE_AGE=$(( $(date +%s) - $(stat -f %m "$QUOTA_CACHE") ))
+else
+    CACHE_AGE=$(( QUOTA_CACHE_TTL + 1 ))
+fi
+
+# バックグラウンドで更新
+if [ "$CACHE_AGE" -gt "$QUOTA_CACHE_TTL" ]; then
+    (
+        QUOTA_JSON=$(bash ~/.claude/scripts/fetch_usage.sh 2>/dev/null)
+        if echo "$QUOTA_JSON" | jq -e '.five_hour' > /dev/null 2>&1; then
+            FIVE_H=$(echo "$QUOTA_JSON" | jq -r '.five_hour.utilization')
+            SEVEN_D=$(echo "$QUOTA_JSON" | jq -r '.seven_day.utilization')
+            FIVE_H_RESET=$(echo "$QUOTA_JSON" | jq -r '.five_hour.resets_at' | sed 's/\.[0-9]*//' | sed 's/\([-+][0-9][0-9]\):\([0-9][0-9]\)$/\1\2/')
+            FIVE_H_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$FIVE_H_RESET" "+%s" 2>/dev/null || echo "0")
+            SEVEN_D_RESET=$(echo "$QUOTA_JSON" | jq -r '.seven_day.resets_at' | sed 's/\.[0-9]*//' | sed 's/\([-+][0-9][0-9]\):\([0-9][0-9]\)$/\1\2/')
+            SEVEN_D_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$SEVEN_D_RESET" "+%s" 2>/dev/null || echo "0")
+            echo "$FIVE_H $SEVEN_D $FIVE_H_EPOCH $SEVEN_D_EPOCH" > "$QUOTA_CACHE"
+        fi
+    ) &
+fi
+
+# キャッシュから読み取り、2-3行目を出力
+if [ -f "$QUOTA_CACHE" ]; then
+    read -r FIVE_H SEVEN_D FIVE_H_EPOCH SEVEN_D_EPOCH < "$QUOTA_CACHE"
+    if [ -n "$FIVE_H" ] && [ -n "$SEVEN_D" ]; then
+        FIVE_H_INT=$(printf "%.0f" "$FIVE_H")
+        SEVEN_D_INT=$(printf "%.0f" "$SEVEN_D")
+
+        FIVE_COLOR=$(color_for_pct "$FIVE_H_INT")
+        SEVEN_COLOR=$(color_for_pct "$SEVEN_D_INT")
+
+        FIVE_BAR=$(make_bar "$FIVE_H_INT")
+        SEVEN_BAR=$(make_bar "$SEVEN_D_INT")
+
+        FIVE_RESET_STR=$(format_reset_time "$FIVE_H_EPOCH")
+        SEVEN_RESET_STR=$(format_reset_time "$SEVEN_D_EPOCH")
+
+        FIVE_RESET_PART=""
+        [ -n "$FIVE_RESET_STR" ] && FIVE_RESET_PART="  ${DIM}resets ${FIVE_RESET_STR}${RESET}"
+
+        SEVEN_RESET_PART=""
+        [ -n "$SEVEN_RESET_STR" ] && SEVEN_RESET_PART="  ${DIM}resets ${SEVEN_RESET_STR}${RESET}"
+
+        FIVE_PCT=$(printf "%3d" "$FIVE_H_INT")
+        SEVEN_PCT=$(printf "%3d" "$SEVEN_D_INT")
+
+        echo -e "5h  ${FIVE_COLOR}${FIVE_BAR} ${FIVE_PCT}%${RESET}${FIVE_RESET_PART}"
+        echo -e "7d  ${SEVEN_COLOR}${SEVEN_BAR} ${SEVEN_PCT}%${RESET}${SEVEN_RESET_PART}"
+    fi
+fi

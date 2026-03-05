@@ -6,15 +6,17 @@ set -euo pipefail
 
 CREDS_FILE="$HOME/.claude/.credentials.json"
 
-# 認証情報ファイルからトークン取得
-# NOTE: キーチェーン (security find-generic-password -w) は認証情報が長い場合に
-# 2KB で切り詰められて JSON が壊れるため、ファイルから読み取る
-if [ ! -f "$CREDS_FILE" ]; then
-    echo '{"error": "認証情報ファイルが見つかりません。Claude Code で認証済みか確認してください。"}'
-    exit 1
+# 認証情報ファイル → キーチェーンの順でトークン取得
+TOKEN=""
+if [ -f "$CREDS_FILE" ]; then
+    TOKEN=$(jq -r '.claudeAiOauth.accessToken // empty' "$CREDS_FILE")
 fi
-
-TOKEN=$(jq -r '.claudeAiOauth.accessToken // empty' "$CREDS_FILE")
+if [ -z "$TOKEN" ]; then
+    KEYCHAIN_JSON=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null || true)
+    if [ -n "$KEYCHAIN_JSON" ]; then
+        TOKEN=$(echo "$KEYCHAIN_JSON" | jq -r '.claudeAiOauth.accessToken // empty' 2>/dev/null)
+    fi
+fi
 if [ -z "$TOKEN" ]; then
     echo '{"error": "OAuth トークンが見つかりません。Claude Code で再認証してください。"}'
     exit 1
