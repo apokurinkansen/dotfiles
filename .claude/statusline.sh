@@ -87,12 +87,20 @@ if [ "$CACHE_AGE" -gt "$QUOTA_CACHE_TTL" ]; then
     (
         QUOTA_JSON=$(bash ~/.claude/scripts/fetch_usage.sh 2>/dev/null)
         if echo "$QUOTA_JSON" | jq -e '.five_hour' > /dev/null 2>&1; then
-            FIVE_H=$(echo "$QUOTA_JSON" | jq -r '.five_hour.utilization')
-            SEVEN_D=$(echo "$QUOTA_JSON" | jq -r '.seven_day.utilization')
-            FIVE_H_RESET=$(echo "$QUOTA_JSON" | jq -r '.five_hour.resets_at' | sed 's/\.[0-9]*//' | sed 's/\([-+][0-9][0-9]\):\([0-9][0-9]\)$/\1\2/')
-            FIVE_H_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$FIVE_H_RESET" "+%s" 2>/dev/null || echo "0")
-            SEVEN_D_RESET=$(echo "$QUOTA_JSON" | jq -r '.seven_day.resets_at' | sed 's/\.[0-9]*//' | sed 's/\([-+][0-9][0-9]\):\([0-9][0-9]\)$/\1\2/')
-            SEVEN_D_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$SEVEN_D_RESET" "+%s" 2>/dev/null || echo "0")
+            FIVE_H=$(echo "$QUOTA_JSON" | jq -r '.five_hour.utilization // 0')
+            SEVEN_D=$(echo "$QUOTA_JSON" | jq -r '.seven_day.utilization // 0')
+            FIVE_H_RESETS_AT=$(echo "$QUOTA_JSON" | jq -r '.five_hour.resets_at // empty')
+            SEVEN_D_RESETS_AT=$(echo "$QUOTA_JSON" | jq -r '.seven_day.resets_at // empty')
+            FIVE_H_EPOCH="0"
+            if [ -n "$FIVE_H_RESETS_AT" ]; then
+                FIVE_H_RESET=$(echo "$FIVE_H_RESETS_AT" | sed 's/\.[0-9]*//' | sed 's/\([-+][0-9][0-9]\):\([0-9][0-9]\)$/\1\2/')
+                FIVE_H_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$FIVE_H_RESET" "+%s" 2>/dev/null || echo "0")
+            fi
+            SEVEN_D_EPOCH="0"
+            if [ -n "$SEVEN_D_RESETS_AT" ]; then
+                SEVEN_D_RESET=$(echo "$SEVEN_D_RESETS_AT" | sed 's/\.[0-9]*//' | sed 's/\([-+][0-9][0-9]\):\([0-9][0-9]\)$/\1\2/')
+                SEVEN_D_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%S%z" "$SEVEN_D_RESET" "+%s" 2>/dev/null || echo "0")
+            fi
             echo "$FIVE_H $SEVEN_D $FIVE_H_EPOCH $SEVEN_D_EPOCH" > "$QUOTA_CACHE"
         fi
     ) &
@@ -114,11 +122,8 @@ if [ -f "$QUOTA_CACHE" ]; then
         FIVE_RESET_STR=$(format_reset_time "$FIVE_H_EPOCH")
         SEVEN_RESET_STR=$(format_reset_time "$SEVEN_D_EPOCH")
 
-        FIVE_RESET_PART=""
-        [ -n "$FIVE_RESET_STR" ] && FIVE_RESET_PART="  ${DIM}resets ${FIVE_RESET_STR}${RESET}"
-
-        SEVEN_RESET_PART=""
-        [ -n "$SEVEN_RESET_STR" ] && SEVEN_RESET_PART="  ${DIM}resets ${SEVEN_RESET_STR}${RESET}"
+        FIVE_RESET_PART="  ${DIM}resets ${FIVE_RESET_STR:--}${RESET}"
+        SEVEN_RESET_PART="  ${DIM}resets ${SEVEN_RESET_STR:--}${RESET}"
 
         FIVE_PCT=$(printf "%3d" "$FIVE_H_INT")
         SEVEN_PCT=$(printf "%3d" "$SEVEN_D_INT")
