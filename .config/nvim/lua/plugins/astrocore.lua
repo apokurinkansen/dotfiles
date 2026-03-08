@@ -12,9 +12,22 @@ return {
         linebreak = true, -- 単語の途中で折り返さない
         breakindent = true, -- 折り返し行もインデントを維持
         cursorline = true, -- カーソルラインを有効化
+        swapfile = false, -- スワップファイルを無効化（Git + undofile で十分）
       },
     },
     autocmds = {
+      -- 外部でファイルが変更されたら自動リロード
+      auto_reload = {
+        {
+          event = { "FocusGained", "BufEnter", "CursorHold" },
+          command = "silent! checktime",
+        },
+        {
+          -- バッファにも変更がある場合は確認なしでリロード（外部ツール優先）
+          event = "FileChangedShell",
+          callback = function() vim.v.fcs_choice = "reload" end,
+        },
+      },
       -- アクティブウィンドウのみカーソルラインを表示
       active_window_cursorline = {
         {

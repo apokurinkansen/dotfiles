@@ -211,6 +211,7 @@ ln -sf "$DOTFILES_DIR/.config/uv/uv.toml" ~/.config/uv/uv.toml
 mkdir -p ~/.config/zellij/layouts
 ln -sf "$DOTFILES_DIR/.config/zellij/config.kdl" ~/.config/zellij/config.kdl
 ln -sf "$DOTFILES_DIR/.config/zellij/layouts/default.kdl" ~/.config/zellij/layouts/default.kdl
+ln -sf "$DOTFILES_DIR/.config/zellij/layouts/tmp.kdl" ~/.config/zellij/layouts/tmp.kdl
 
 # macOS 専用の設定リンク
 if [[ "$OS" == "Darwin" ]]; then
@@ -225,6 +226,9 @@ if [[ "$OS" == "Darwin" ]]; then
     mkdir -p ~/.config/raycast
     ln -sfn "$DOTFILES_DIR/.config/raycast/script-commands" ~/.config/raycast/script-commands
 fi
+
+mkdir -p ~/.config/karabiner
+ln -sf "$DOTFILES_DIR/.config/karabiner/karabiner.json" ~/.config/karabiner/karabiner.json
 
 ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 

@@ -10,10 +10,7 @@ OS=$(uname -s)
 
 if [[ "$OS" == "Darwin" ]]; then
     # macOS: キーチェーンからトークン取得
-    CREDS=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null) || {
-        echo '{"error": "キーチェーンから認証情報を取得できませんでした。Claude Code で認証済みか確認してください。"}'
-        exit 1
-    }
+    CREDS_FILE="$HOME/.claude/.credentials.json"
 else
     # Linux: credentials ファイルからトークン取得
     CREDS_FILE="$HOME/.claude/.credentials.json"
@@ -21,10 +18,19 @@ else
         echo '{"error": "認証情報ファイルが見つかりません。Claude Code で認証済みか確認してください。"}'
         exit 1
     fi
-    CREDS=$(cat "$CREDS_FILE")
 fi
 
-TOKEN=$(echo "$CREDS" | jq -r '.claudeAiOauth.accessToken // empty')
+# 認証情報ファイル → キーチェーンの順でトークン取得
+TOKEN=""
+if [ -f "$CREDS_FILE" ]; then
+    TOKEN=$(jq -r '.claudeAiOauth.accessToken // empty' "$CREDS_FILE")
+fi
+if [ -z "$TOKEN" ]; then
+    KEYCHAIN_JSON=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null || true)
+    if [ -n "$KEYCHAIN_JSON" ]; then
+        TOKEN=$(echo "$KEYCHAIN_JSON" | jq -r '.claudeAiOauth.accessToken // empty' 2>/dev/null)
+    fi
+fi
 if [ -z "$TOKEN" ]; then
     echo '{"error": "OAuth トークンが見つかりません。Claude Code で再認証してください。"}'
     exit 1
@@ -38,7 +44,8 @@ RESPONSE=$(curl -s --max-time 5 "https://api.anthropic.com/api/oauth/usage" \
 
 # レスポンス検証
 if ! echo "$RESPONSE" | jq -e '.five_hour' > /dev/null 2>&1; then
-    echo '{"error": "API からの応答が不正です。トークンが期限切れの可能性があります。"}'
+    API_ERROR=$(echo "$RESPONSE" | jq -r '.error.message // .error // "不明なエラー"' 2>/dev/null)
+    echo "{\"error\": \"API エラー: ${API_ERROR}\"}"
     exit 1
 fi
 

@@ -46,6 +46,13 @@ fi
 eval "$(starship init zsh)"
 
 # ==================================================
+# direnv（ディレクトリごとの環境変数管理）
+# NOTE: 他のシェル拡張（starship等）の後に置くこと
+#       https://direnv.net/docs/hook.html
+# ==================================================
+eval "$(direnv hook zsh)"
+
+# ==================================================
 # その他の設定
 # ==================================================
 HISTFILE=~/.zsh_history
@@ -60,6 +67,17 @@ setopt correct
 # エイリアス
 # ==================================================
 alias vim='nvim'
+
+# ==================================================
+# カスタム関数
+# ==================================================
+# 指定ディレクトリで Nvim + Claude Code の Zellij タブを開く
+# Usage: ztmp [dir]  (省略時はカレントディレクトリ)
+ztmp() {
+  local dir="${1:-.}"
+  local name="$(realpath "$dir" | sed "s|^$HOME|~|")"
+  zellij action new-tab --layout ~/.config/zellij/layouts/tmp.kdl --cwd "$dir" --name "$name"
+}
 
 # ==================================================
 # Zellij自動起動（Ghostty または WSL 使用時）
