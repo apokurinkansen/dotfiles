@@ -122,7 +122,7 @@ if [ "$CACHE_AGE" -gt "$QUOTA_CACHE_TTL" ]; then
     ) &
 fi
 
-# キャッシュから読み取り、2-3行目を出力
+# キャッシュから読み取り、3-4行目を出力
 if [ -f "$QUOTA_CACHE" ]; then
     read -r FIVE_H SEVEN_D FIVE_H_EPOCH SEVEN_D_EPOCH < "$QUOTA_CACHE"
     if [ -n "$FIVE_H" ] && [ -n "$SEVEN_D" ]; then

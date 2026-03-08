@@ -90,6 +90,9 @@ mkdir -p ~/.config/ghostty
 ln -sf "$DOTFILES_DIR/.config/ghostty/config" ~/.config/ghostty/config
 ln -sf "$DOTFILES_DIR/.config/ghostty/bg.jpg" ~/.config/ghostty/bg.jpg
 
+mkdir -p ~/.config/karabiner
+ln -sf "$DOTFILES_DIR/.config/karabiner/karabiner.json" ~/.config/karabiner/karabiner.json
+
 ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 
 mkdir -p ~/.config/git
