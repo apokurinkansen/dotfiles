@@ -12,6 +12,7 @@ return {
         linebreak = true, -- 単語の途中で折り返さない
         breakindent = true, -- 折り返し行もインデントを維持
         cursorline = true, -- カーソルラインを有効化
+        swapfile = false, -- スワップファイルを無効化（Git + undofile で十分）
       },
     },
     autocmds = {
